@@ -28,11 +28,9 @@ describe('Test the card helpers', () => {
       },
     }
     
-    // Check static structure and content
     assert.equal(response.body.data.cardCode.codeId, expectedStructure.cardCode.codeId)
     assert.equal(response.body.data.cardCode.code, expectedStructure.cardCode.code)
     
-    // Check dynamic fields exist and are valid dates
     assert.exists(response.body.data.cardCode.createdAt)
     assert.exists(response.body.data.cardCode.updatedAt)
     assert.exists(response.body.data.cardCode.publishedAt)
