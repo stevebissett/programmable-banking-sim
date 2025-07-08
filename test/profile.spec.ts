@@ -52,10 +52,11 @@ describe('Test the profiles', () => {
     if (accounts.length > 1) {
       const firstAccount = accounts[0]
       
-      accounts.forEach((account: any, index: number) => {
-        assert.equal(account.profileId, firstAccount.profileId, `Account ${index} has different profileId`)
-        assert.equal(account.profileName, firstAccount.profileName, `Account ${index} has different profileName`)
-        assert.equal(account.kycCompliant, firstAccount.kycCompliant, `Account ${index} has different kycCompliant status`)
+      accounts.forEach((account: unknown, index: number) => {
+        const acc = account as Record<string, unknown>
+        assert.equal(acc.profileId, firstAccount.profileId, `Account ${index} has different profileId`)
+        assert.equal(acc.profileName, firstAccount.profileName, `Account ${index} has different profileName`)
+        assert.equal(acc.kycCompliant, firstAccount.kycCompliant, `Account ${index} has different kycCompliant`)
       })
     }
   })
