@@ -363,11 +363,19 @@ router.delete('/:accountId/transactions/:postingDate',
 router.post('/', async (req: Request, res: Response) => {
   try {
     const baseAccount = Investec.account()
+    
+    // Get the default profile (or first available profile)
+    const defaultProfile = await prisma.profile.findFirst()
+    if (!defaultProfile) {
+      console.log('No profile found. Please seed the database first.')
+      return formatErrorResponse(req, res, 500)
+    }
+    
     const account = { 
-      ...baseAccount, 
-      profileId: '10001234567890', // Default profile ID
-      profileName: 'Joe Soap', // Default profile name
-      kycCompliant: true, // Default KYC compliance
+      ...baseAccount,
+      profileId: defaultProfile.profileId,
+      profileName: defaultProfile.profileName,
+      kycCompliant: true,
       ...req.body 
     }
     // check that the account exists

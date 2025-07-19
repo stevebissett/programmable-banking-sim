@@ -10,7 +10,7 @@ import { ExecutionItem } from '../types.js'
 interface CardResponse {
   CardKey: string
   CardNumber: string
-  IsProgrammable: string
+  IsProgrammable: boolean
   status: string
   CardTypeCode: string
   AccountNumber: string
