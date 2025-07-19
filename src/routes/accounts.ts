@@ -362,8 +362,14 @@ router.delete('/:accountId/transactions/:postingDate',
 // function to create an account
 router.post('/', async (req: Request, res: Response) => {
   try {
-    let account = Investec.account()
-    account = { ...account, ...req.body }
+    const baseAccount = Investec.account()
+    const account = { 
+      ...baseAccount, 
+      profileId: '10001234567890', // Default profile ID
+      profileName: 'Joe Soap', // Default profile name
+      kycCompliant: true, // Default KYC compliance
+      ...req.body 
+    }
     // check that the account exists
     const accountcheck = await prisma.account.findFirst({
       where: {
@@ -444,6 +450,35 @@ router.post('/beneficiaries', async (req: Request, res: Response) => {
     })
 
     return formatResponse(beneficiary, req, res)
+  } catch (error) {
+    console.log(error)
+    return formatErrorResponse(req, res, 500)
+  }
+})
+
+// Delete a beneficiary
+router.delete('/za/pb/v1/accounts/beneficiaries/:beneficiaryId', async (req: Request, res: Response) => {
+  try {
+    const { beneficiaryId } = req.params
+
+    // Check if beneficiary exists
+    const existingBeneficiary = await prisma.beneficiary.findUnique({
+      where: { beneficiaryId },
+    })
+
+    if (!existingBeneficiary) {
+      return formatErrorResponse(req, res, 404)
+    }
+
+    // Delete the beneficiary
+    await prisma.beneficiary.delete({
+      where: { beneficiaryId },
+    })
+
+    // Emit database summary update for real-time dashboard
+    await emitDatabaseSummary()
+
+    return res.status(200).json({})
   } catch (error) {
     console.log(error)
     return formatErrorResponse(req, res, 500)

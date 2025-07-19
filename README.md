@@ -69,6 +69,10 @@ There are helpful links to the Investec docs, Community wiki, GitHub repo and th
     - Get the transactions of an account
 - **GET /za/pb/v1/accounts/beneficiaries**
     - Get all beneficiaries
+- **POST /za/pb/v1/accounts/beneficiaries**
+    - Create a new beneficiary
+- **DELETE /za/pb/v1/accounts/beneficiaries/:beneficiaryId**
+    - Delete a beneficiary
 
 ### Cards
 - **GET /za/v1/cards/countries**
